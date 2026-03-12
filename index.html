@@ -11,598 +11,140 @@
     --cream: #f5efe3;
     --warm: #e8dcc8;
     --gold: #c8922a;
-    --rust: #a84b2f;
-    --sage: #4a6741;
     --slate: #3d4f5c;
     --mist: #8fa3ae;
     --parchment: #f0e6d0;
-
-    --fd: #c8922a;   /* foundational knowledge */
-    --app: #a84b2f;  /* application */
-    --int: #4a6741;  /* integration */
-    --hum: #3d4f5c;  /* human dimension */
-    --car: #7a5c8a;  /* caring */
-    --met: #8a6b3a;  /* learning how to learn */
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* NOISE TEXTURE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  /* HEADER */
-  header {
-    position: relative;
-    padding: 4rem 2rem 3rem;
-    text-align: center;
-    border-bottom: 2px solid var(--gold);
-    background: linear-gradient(180deg, var(--parchment) 0%, var(--cream) 100%);
-    overflow: hidden;
-  }
-
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 12px;
-    background: var(--gold);
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-  }
-
-  .header-eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 900;
-    line-height: 1.1;
-    color: var(--ink);
-  }
-
-  h1 span {
-    color: var(--gold);
-    font-style: italic;
-  }
-
-  .header-sub {
-    margin-top: 1.2rem;
-    font-size: 1rem;
-    color: var(--slate);
-    max-width: 560px;
-    margin-inline: auto;
-    line-height: 1.7;
-  }
-
-  /* DECORATIVE CIRCLES */
-  .deco-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid var(--gold);
-    opacity: 0.15;
-    pointer-events: none;
-  }
-
-  /* MAIN LAYOUT */
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem 6rem;
-  }
-
-  /* WHEEL / HEX OVERVIEW */
-  .wheel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .wheel-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--slate);
-    text-align: center;
-  }
-
-  /* SVG WHEEL */
-  .wheel-svg-wrap {
-    position: relative;
-    width: min(500px, 90vw);
-    height: min(500px, 90vw);
-    cursor: pointer;
-  }
-
-  .wheel-svg-wrap svg { width: 100%; height: 100%; }
-
-  .segment { transition: opacity 0.25s, filter 0.25s; cursor: pointer; }
-  .segment:hover, .segment.active { filter: brightness(1.15) saturate(1.2); }
-  .segment.dimmed { opacity: 0.35; }
-
-  .center-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    fill: var(--ink);
-    text-anchor: middle;
-    dominant-baseline: middle;
-    pointer-events: none;
-  }
-
-  /* CATEGORY CARDS GRID */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .cat-card {
-    border: 1.5px solid var(--warm);
-    border-radius: 4px;
-    background: white;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    position: relative;
-  }
-
-  .cat-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 5px;
-  }
-
-  .cat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  }
-
-  .cat-card.expanded {
-    border-color: currentColor;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem 1.25rem 1rem;
-  }
-
-  .card-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    color: white;
-  }
-
-  .card-title-group { flex: 1; }
-
-  .card-no {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    opacity: 0.5;
-    font-weight: 500;
-  }
-
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .card-subtitle {
-    font-size: 0.78rem;
-    opacity: 0.6;
-    margin-top: 2px;
-    font-style: italic;
-  }
-
-  .card-toggle {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 1px solid var(--warm);
-    background: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: transform 0.25s;
-    color: var(--ink);
-    flex-shrink: 0;
-  }
-
-  .cat-card.expanded .card-toggle { transform: rotate(45deg); }
-
-  .card-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0 1.25rem;
-  }
-
-  .cat-card.expanded .card-body { max-height: 900px; padding-bottom: 1.25rem; }
-
-  .card-desc {
-    font-size: 0.88rem;
-    line-height: 1.75;
-    color: #444;
-    margin-bottom: 1rem;
-    padding-top: 0.25rem;
-  }
-
-  .card-questions {
-    background: var(--parchment);
-    border-radius: 4px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .card-questions h4 {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 0.6rem;
-    opacity: 0.6;
-  }
-
-  .card-questions ul { list-style: none; }
-
-  .card-questions ul li {
-    font-size: 0.82rem;
-    line-height: 1.6;
-    padding: 0.3rem 0;
-    padding-left: 1.2rem;
-    position: relative;
-    color: #333;
-  }
-
-  .card-questions ul li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    opacity: 0.5;
-    font-size: 0.75rem;
-  }
-
-  .card-examples {
-    margin-bottom: 0.5rem;
-  }
-
-  .card-examples h4 {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 0.6rem;
-    opacity: 0.6;
-  }
-
-  .example-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .chip {
-    padding: 0.25rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.72rem;
-    font-weight: 500;
-    border: 1px solid currentColor;
-    opacity: 0.8;
-  }
-
-  /* CONNECTIONS SECTION */
-  .connections-section {
-    margin-bottom: 4rem;
-  }
-
-  .section-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .section-sub {
-    font-size: 0.88rem;
-    color: var(--slate);
-    margin-bottom: 2rem;
-    max-width: 600px;
-    line-height: 1.7;
-  }
-
-  .connection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-  }
-
-  .conn-card {
-    background: white;
-    border: 1.5px solid var(--warm);
-    border-radius: 4px;
-    padding: 1.25rem;
-    transition: box-shadow 0.2s;
-  }
-
-  .conn-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-
-  .conn-pair {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .conn-badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: white;
-  }
-
-  .conn-arrow { opacity: 0.4; font-size: 0.8rem; }
-
-  .conn-text { font-size: 0.83rem; line-height: 1.6; color: #444; }
-
-  /* REFLECTION TOOL */
-  .reflection-section {
-    background: var(--ink);
-    color: var(--cream);
-    border-radius: 6px;
-    padding: 2.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .reflection-section .section-label { color: var(--gold); margin-bottom: 0.4rem; }
-  .reflection-section .section-sub { color: var(--warm); }
-
-  .reflection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .refl-item label {
-    display: block;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--mist);
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-  }
-
-  .refl-item textarea, .refl-item input {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 3px;
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.83rem;
-    padding: 0.6rem 0.8rem;
-    resize: vertical;
-    line-height: 1.6;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .refl-item textarea:focus, .refl-item input:focus {
-    border-color: var(--gold);
-  }
-
-  .refl-item textarea { min-height: 80px; }
-
-  .reflection-reset {
-    margin-top: 1.5rem;
-    padding: 0.6rem 1.4rem;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .reflection-reset:hover { background: var(--gold); color: var(--ink); }
-
-  /* CHECKLIST */
-  .checklist-section { margin-bottom: 4rem; }
-
-  .checklist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.8rem;
-    padding: 0.8rem 1rem;
-    background: white;
-    border: 1.5px solid var(--warm);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    user-select: none;
-  }
-
-  .check-item.checked {
-    background: var(--parchment);
-    border-color: var(--gold);
-  }
-
-  .check-box {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--mist);
-    border-radius: 3px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .check-item.checked .check-box {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: white;
-    font-size: 0.7rem;
-  }
-
-  .check-text { font-size: 0.83rem; line-height: 1.55; color: #333; }
-  .check-item.checked .check-text { color: #666; text-decoration: line-through; text-decoration-color: var(--gold); }
-
-  /* PROGRESS BAR */
-  .progress-bar-wrap {
-    margin-top: 1rem;
-    height: 4px;
-    background: var(--warm);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
-
-  .progress-label {
-    font-size: 0.75rem;
-    color: var(--slate);
-    margin-top: 0.4rem;
-    text-align: right;
-  }
-
-  /* FOOTER */
-  footer {
-    text-align: center;
-    padding: 2rem;
-    border-top: 1px solid var(--warm);
-    font-size: 0.75rem;
-    color: var(--mist);
-  }
-
-  footer strong { color: var(--gold); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .fade-up {
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards;
-  }
-
-  .delay-1 { animation-delay: 0.15s; }
-  .delay-2 { animation-delay: 0.3s; }
-  .delay-3 { animation-delay: 0.45s; }
-  .delay-4 { animation-delay: 0.6s; }
-
-  /* NAV TABS */
-  .nav-tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--warm);
-    margin-bottom: 2.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .nav-tab {
-    padding: 0.7rem 1.4rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: var(--slate);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    white-space: nowrap;
-    transition: color 0.2s, border-color 0.2s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
+  body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+
+  header { position: relative; padding: 4rem 2rem 3rem; text-align: center; border-bottom: 2px solid var(--gold); background: linear-gradient(180deg, var(--parchment) 0%, var(--cream) 100%); overflow: hidden; }
+  header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 120px; height: 12px; background: var(--gold); clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); }
+  .deco-circle { position: absolute; border-radius: 50%; border: 1px solid var(--gold); opacity: 0.15; pointer-events: none; }
+  .header-eyebrow { font-weight: 500; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; color: var(--ink); }
+  h1 span { color: var(--gold); font-style: italic; }
+  .header-sub { margin-top: 1.2rem; font-size: 1rem; color: var(--slate); max-width: 560px; margin-inline: auto; line-height: 1.7; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  .nav-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--warm); margin-bottom: 2.5rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-tab { padding: 0.7rem 1.4rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: none; background: none; color: var(--slate); border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; font-family: 'DM Sans', sans-serif; }
   .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
   .nav-tab:hover { color: var(--ink); }
-
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* DIVIDER */
-  .ornament {
-    text-align: center;
-    color: var(--gold);
-    font-size: 1.2rem;
-    letter-spacing: 0.5em;
-    margin: 2rem 0;
-    opacity: 0.5;
-  }
+  /* WHEEL */
+  .wheel-container { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin-bottom: 3rem; }
+  .wheel-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--slate); text-align: center; }
+  .wheel-svg-wrap { position: relative; width: min(520px, 92vw); height: min(520px, 92vw); cursor: pointer; }
+  .wheel-svg-wrap svg { width: 100%; height: 100%; overflow: visible; }
+  .segment { transition: opacity 0.25s, filter 0.25s; cursor: pointer; }
+  .segment:hover, .segment.active { filter: brightness(1.15) saturate(1.2); }
+  .segment.dimmed { opacity: 0.28; }
+  .wheel-info-panel { display: none; background: white; border: 1.5px solid var(--warm); border-radius: 4px; padding: 1.5rem; max-width: 620px; margin: 0 auto 2rem; animation: fadeUp 0.3s ease; }
 
-  @media (max-width: 600px) {
-    header { padding: 2.5rem 1.5rem 2.5rem; }
-    .reflection-section { padding: 1.5rem; }
-  }
+  /* CARDS */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
+  .cat-card { border: 1.5px solid var(--warm); border-radius: 4px; background: white; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+  .cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+  .cat-card.expanded { box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+  .card-header { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.25rem 1rem; }
+  .card-icon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .card-title-group { flex: 1; }
+  .card-no { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.5; font-weight: 500; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+  .card-subtitle { font-size: 0.78rem; opacity: 0.6; margin-top: 2px; font-style: italic; }
+  .card-toggle { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--warm); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: transform 0.25s; color: var(--ink); flex-shrink: 0; }
+  .cat-card.expanded .card-toggle { transform: rotate(45deg); }
+  .card-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); padding: 0 1.25rem; }
+  .cat-card.expanded .card-body { max-height: 1400px; padding-bottom: 1.25rem; }
+  .card-desc { font-size: 0.88rem; line-height: 1.8; color: #444; margin-bottom: 1rem; padding-top: 0.25rem; }
+  .card-questions { background: var(--parchment); border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
+  .card-questions h4, .card-examples h4 { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.6rem; opacity: 0.6; }
+  .card-questions ul { list-style: none; }
+  .card-questions ul li { font-size: 0.82rem; line-height: 1.6; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; color: #333; }
+  .card-questions ul li::before { content: '→'; position: absolute; left: 0; opacity: 0.5; font-size: 0.75rem; }
+  .card-examples { margin-bottom: 0.5rem; }
+  .example-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip { padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.72rem; font-weight: 500; border: 1px solid currentColor; opacity: 0.8; }
+
+  /* CONNECTIONS */
+  .connections-section { margin-bottom: 4rem; }
+  .section-label { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .section-sub { font-size: 0.88rem; color: var(--slate); margin-bottom: 2rem; max-width: 600px; line-height: 1.7; }
+  .connection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .conn-card { background: white; border: 1.5px solid var(--warm); border-radius: 4px; padding: 1.25rem; transition: box-shadow 0.2s; }
+  .conn-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .conn-pair { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .conn-badge { padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 500; color: white; }
+  .conn-arrow { opacity: 0.4; font-size: 0.8rem; }
+  .conn-text { font-size: 0.83rem; line-height: 1.6; color: #444; }
+
+  /* REFLECTION */
+  .reflection-section { background: var(--ink); color: var(--cream); border-radius: 6px; padding: 2.5rem; margin-bottom: 4rem; }
+  .reflection-section .section-label { color: var(--gold); margin-bottom: 0.4rem; }
+  .reflection-section .section-sub { color: var(--warm); margin-bottom: 0; }
+  .refl-steps { display: flex; gap: 0.5rem; margin: 1.5rem 0 1rem; flex-wrap: wrap; }
+  .refl-step-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: var(--mist); font-family: 'DM Sans', sans-serif; font-size: 0.73rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .refl-step-btn.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  .refl-step-btn:hover:not(.active) { border-color: rgba(255,255,255,0.4); color: var(--cream); }
+  .refl-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 1.5rem; margin-bottom: 1rem; display: none; }
+  .refl-card.active { display: block; animation: fadeUp 0.3s ease; }
+  .refl-card-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+  .refl-icon { font-size: 1.4rem; }
+  .refl-cat-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
+  .refl-prompt { font-size: 0.85rem; color: var(--warm); line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+  .refl-textarea { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; padding: 0.8rem 1rem; min-height: 110px; resize: vertical; line-height: 1.7; outline: none; transition: border-color 0.2s; }
+  .refl-textarea:focus { border-color: var(--gold); }
+  .refl-submit-btn { margin-top: 0.8rem; padding: 0.6rem 1.4rem; background: var(--gold); border: none; color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: opacity 0.2s; }
+  .refl-submit-btn:hover { opacity: 0.85; }
+  .refl-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .refl-feedback { margin-top: 1rem; background: rgba(200,146,42,0.12); border: 1px solid rgba(200,146,42,0.3); border-radius: 4px; padding: 1rem 1.2rem; font-size: 0.85rem; line-height: 1.75; color: var(--cream); display: none; animation: fadeUp 0.3s ease; }
+  .refl-feedback.visible { display: block; }
+  .fb-loading { display: flex; align-items: center; gap: 0.6rem; color: var(--mist); font-style: italic; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(200,146,42,0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .fb-section { margin-bottom: 0.75rem; }
+  .fb-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.25rem; }
+  .fb-label.good { color: #7bc47f; }
+  .fb-label.improve { color: #f0c060; }
+  .fb-text { font-size: 0.85rem; line-height: 1.7; }
+  .refl-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .refl-nav-btn { padding: 0.5rem 1.2rem; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; cursor: pointer; border-radius: 3px; transition: all 0.2s; }
+  .refl-nav-btn:hover { background: rgba(255,255,255,0.08); }
+  .refl-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .refl-progress-dots { display: flex; gap: 0.4rem; align-items: center; }
+  .refl-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.2s; }
+  .refl-dot.done { background: var(--gold); }
+  .refl-dot.active { background: white; }
+
+  /* CHECKLIST */
+  .checklist-section { margin-bottom: 4rem; }
+  .checklist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; }
+  .check-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.8rem 1rem; background: white; border: 1.5px solid var(--warm); border-radius: 4px; cursor: pointer; transition: border-color 0.2s, background 0.2s; user-select: none; }
+  .check-item.checked { background: var(--parchment); border-color: var(--gold); }
+  .check-box { width: 18px; height: 18px; border: 1.5px solid var(--mist); border-radius: 3px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .check-item.checked .check-box { background: var(--gold); border-color: var(--gold); color: white; font-size: 0.7rem; }
+  .check-text { font-size: 0.83rem; line-height: 1.55; color: #333; }
+  .check-item.checked .check-text { color: #888; text-decoration: line-through; text-decoration-color: var(--gold); }
+  .progress-bar-wrap { margin-top: 1rem; height: 4px; background: var(--warm); border-radius: 2px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+  .progress-label { font-size: 0.75rem; color: var(--slate); margin-top: 0.4rem; text-align: right; }
+
+  .ornament { text-align: center; color: var(--gold); font-size: 1.2rem; letter-spacing: 0.5em; margin: 2rem 0; opacity: 0.5; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid var(--warm); font-size: 0.75rem; color: var(--mist); }
+  footer strong { color: var(--gold); }
+  @media (max-width: 600px) { header { padding: 2.5rem 1.5rem; } .reflection-section { padding: 1.5rem; } }
 </style>
 </head>
 <body>
@@ -616,67 +158,78 @@
 </header>
 
 <main>
-
-  <!-- NAV TABS -->
   <nav class="nav-tabs fade-up delay-3">
-    <button class="nav-tab active" onclick="switchTab('oversikt')">Oversikt</button>
-    <button class="nav-tab" onclick="switchTab('kategorier')">De 6 Kategoriene</button>
-    <button class="nav-tab" onclick="switchTab('sammenhenger')">Sammenhenger</button>
-    <button class="nav-tab" onclick="switchTab('refleksjon')">Refleksjonsverktøy</button>
-    <button class="nav-tab" onclick="switchTab('sjekkliste')">Sjekkliste</button>
+    <button class="nav-tab active" onclick="switchTab('oversikt',this)">Oversikt</button>
+    <button class="nav-tab" onclick="switchTab('kategorier',this)">De 6 Kategoriene</button>
+    <button class="nav-tab" onclick="switchTab('sammenhenger',this)">Sammenhenger</button>
+    <button class="nav-tab" onclick="switchTab('refleksjon',this)">Refleksjonsverktøy</button>
+    <button class="nav-tab" onclick="switchTab('sjekkliste',this)">Sjekkliste</button>
   </nav>
 
-  <!-- OVERSIKT TAB -->
+  <!-- OVERSIKT -->
   <div id="tab-oversikt" class="tab-panel active">
     <div class="wheel-container fade-up">
       <p class="wheel-title">Klikk på et segment for å utforske kategorien</p>
       <div class="wheel-svg-wrap">
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="wheel-svg">
+        <!-- SVG pie with 6 equal segments (60 deg each), labels centered in each slice -->
+        <!-- cx=200,cy=200, r=138 for outer arc, r=62 for center hole -->
+        <!-- Segment angles: seg0=270-330, seg1=330-30, seg2=30-90, seg3=90-150, seg4=150-210, seg5=210-270 -->
+        <!-- Points on outer circle at r=138: -->
+        <!-- 270deg: (200, 62)    330deg: (319.6,131)   30deg: (319.6,269) -->
+        <!-- 90deg:  (200,338)    150deg: (80.4,269)    210deg: (80.4,131)  -->
+        <svg viewBox="-20 -20 440 440" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Seg 0: Grunnleggende kunnskap (gull) 270-330deg, label center ~300deg -->
+          <path d="M200,200 L200,62 A138,138 0 0,1 319.6,131 Z" fill="#c8922a" class="segment" id="seg-0" onclick="highlightSeg(0)" opacity="0.9"/>
+          <!-- Label at 300deg, r=100 from center: x=200+100*cos(300)=200+50=250, y=200+100*sin(300)=200-86.6=113 -->
+          <text x="258" y="107" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Grunnleggende</text>
+          <text x="258" y="121" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">kunnskap</text>
+
+          <!-- Seg 1: Anvendelse (rust) 330-30deg, label center ~0deg -->
+          <path d="M200,200 L319.6,131 A138,138 0 0,1 319.6,269 Z" fill="#a84b2f" class="segment" id="seg-1" onclick="highlightSeg(1)" opacity="0.9"/>
+          <!-- Label at 0deg, r=100: x=300, y=200 -->
+          <text x="316" y="197" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Anvendelse</text>
+
+          <!-- Seg 2: Integrasjon (grønn) 30-90deg, label center ~60deg -->
+          <path d="M200,200 L319.6,269 A138,138 0 0,1 200,338 Z" fill="#4a6741" class="segment" id="seg-2" onclick="highlightSeg(2)" opacity="0.9"/>
+          <!-- Label at 60deg, r=100: x=200+100*cos(60)=250, y=200+100*sin(60)=287 -->
+          <text x="258" y="290" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Integrasjon</text>
+
+          <!-- Seg 3: Human dimensjon (blå) 90-150deg, label center ~120deg -->
+          <path d="M200,200 L200,338 A138,138 0 0,1 80.4,269 Z" fill="#3d4f5c" class="segment" id="seg-3" onclick="highlightSeg(3)" opacity="0.9"/>
+          <!-- Label at 120deg, r=100: x=200+100*cos(120)=150, y=200+100*sin(120)=287 -->
+          <text x="140" y="290" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Human</text>
+          <text x="140" y="304" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">dimensjon</text>
+
+          <!-- Seg 4: Engasjement (lilla) 150-210deg, label center ~180deg -->
+          <path d="M200,200 L80.4,269 A138,138 0 0,1 80.4,131 Z" fill="#7a5c8a" class="segment" id="seg-4" onclick="highlightSeg(4)" opacity="0.9"/>
+          <!-- Label at 180deg, r=100: x=100, y=200 -->
+          <text x="83" y="197" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Engasjement</text>
+
+          <!-- Seg 5: Lære å lære (brun) 210-270deg, label center ~240deg -->
+          <path d="M200,200 L80.4,131 A138,138 0 0,1 200,62 Z" fill="#8a6b3a" class="segment" id="seg-5" onclick="highlightSeg(5)" opacity="0.9"/>
+          <!-- Label at 240deg, r=100: x=200+100*cos(240)=150, y=200+100*sin(240)=113 -->
+          <text x="140" y="107" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">Lære</text>
+          <text x="140" y="121" text-anchor="middle" fill="white" font-size="11" font-family="DM Sans,sans-serif" font-weight="600" pointer-events="none">å lære</text>
+
           <!-- Center circle -->
-          <circle cx="200" cy="200" r="58" fill="#f5efe3" stroke="#c8922a" stroke-width="1.5"/>
-          <text x="200" y="192" class="center-label" font-size="11">Signifikant</text>
-          <text x="200" y="206" class="center-label" font-size="11">Læring</text>
-          <text x="200" y="220" class="center-label" font-size="9" fill="#c8922a">◆</text>
-
-          <!-- Segment 1: Foundational Knowledge -->
-          <path d="M200,200 L200,70 A130,130 0 0,1 312.7,135 Z" fill="#c8922a" class="segment" id="seg-0" onclick="highlightSeg(0)" opacity="0.85"/>
-          <text transform="rotate(-30, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Grunnleggende</text>
-          <text transform="rotate(-30, 200, 200) translate(0, -98)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">kunnskap</text>
-
-          <!-- Segment 2: Application -->
-          <path d="M200,200 L312.7,135 A130,130 0 0,1 312.7,265 Z" fill="#a84b2f" class="segment" id="seg-1" onclick="highlightSeg(1)" opacity="0.85"/>
-          <text transform="rotate(60, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Anvendelse</text>
-
-          <!-- Segment 3: Integration -->
-          <path d="M200,200 L312.7,265 A130,130 0 0,1 200,330 Z" fill="#4a6741" class="segment" id="seg-2" onclick="highlightSeg(2)" opacity="0.85"/>
-          <text transform="rotate(120, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Integrasjon</text>
-
-          <!-- Segment 4: Human Dimension -->
-          <path d="M200,200 L200,330 A130,130 0 0,1 87.3,265 Z" fill="#3d4f5c" class="segment" id="seg-3" onclick="highlightSeg(3)" opacity="0.85"/>
-          <text transform="rotate(180, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Human</text>
-          <text transform="rotate(180, 200, 200) translate(0, -98)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">dimensjon</text>
-
-          <!-- Segment 5: Caring -->
-          <path d="M200,200 L87.3,265 A130,130 0 0,1 87.3,135 Z" fill="#7a5c8a" class="segment" id="seg-4" onclick="highlightSeg(4)" opacity="0.85"/>
-          <text transform="rotate(240, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Engasjement</text>
-
-          <!-- Segment 6: Learning how to learn -->
-          <path d="M200,200 L87.3,135 A130,130 0 0,1 200,70 Z" fill="#8a6b3a" class="segment" id="seg-5" onclick="highlightSeg(5)" opacity="0.85"/>
-          <text transform="rotate(300, 200, 200) translate(0, -110)" x="200" y="200" text-anchor="middle" fill="white" font-size="10" font-family="DM Sans" font-weight="500" pointer-events="none">Lære å lære</text>
+          <circle cx="200" cy="200" r="64" fill="#f5efe3" stroke="#c8922a" stroke-width="1.5"/>
+          <text x="200" y="194" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1208">Signifikant</text>
+          <text x="200" y="209" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1208">Læring</text>
+          <text x="200" y="223" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#c8922a">◆</text>
         </svg>
       </div>
     </div>
 
-    <!-- Active segment info panel -->
-    <div id="wheel-info" style="display:none; background:white; border:1.5px solid var(--warm); border-radius:4px; padding:1.5rem; max-width:600px; margin:0 auto 2rem; animation: fadeUp 0.3s ease;">
-      <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem;">
+    <div class="wheel-info-panel" id="wheel-info">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
         <div id="wi-icon" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;"></div>
         <div>
           <p id="wi-no" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;opacity:0.5;font-weight:500;"></p>
           <h3 id="wi-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;"></h3>
         </div>
       </div>
-      <p id="wi-desc" style="font-size:0.88rem;line-height:1.75;color:#444;margin-bottom:1rem;"></p>
+      <p id="wi-desc" style="font-size:0.88rem;line-height:1.8;color:#444;margin-bottom:1rem;"></p>
       <div style="background:var(--parchment);border-radius:4px;padding:1rem;">
         <p style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;opacity:0.5;font-weight:500;margin-bottom:0.5rem;">Nøkkelspørsmål</p>
         <p id="wi-q" style="font-size:0.85rem;line-height:1.7;font-style:italic;color:#333;"></p>
@@ -684,24 +237,19 @@
     </div>
 
     <div class="ornament">◆ ◆ ◆</div>
-
-    <div style="max-width:700px; margin:0 auto;">
+    <div style="max-width:700px;margin:0 auto;">
       <h2 class="section-label">Hva er Finks taksonomi?</h2>
-      <p class="section-sub">
-        L. Dee Fink introduserte i 2003 en ny taksonomi for å hjelpe undervisere å designe kurs som skaper <em>signifikant</em> og varig læring. I motsetning til Blooms taksonomi (som er hierarkisk), er Finks seks kategorier <strong>interaktive og gjensidig forsterkende</strong> – læring i én kategori støtter og beriker de andre.
-      </p>
-      <p class="section-sub" style="margin-top:0.5rem;">
-        Modellen utfordrer oss til å spørre: <em>Hva vil studentene huske om to år? Hva vil forandre seg i måten de tenker og handler på?</em>
-      </p>
+      <p class="section-sub">L. Dee Fink introduserte i 2003 en ny taksonomi for å hjelpe undervisere å designe kurs som skaper <em>signifikant</em> og varig læring. I motsetning til Blooms taksonomi (som er hierarkisk), er Finks seks kategorier <strong>interaktive og gjensidig forsterkende</strong> – læring i én kategori støtter og beriker de andre.</p>
+      <p class="section-sub" style="margin-top:0.5rem;">Modellen utfordrer oss til å spørre: <em>Hva vil studentene huske om to år? Hva vil forandre seg i måten de tenker og handler på?</em></p>
     </div>
   </div>
 
-  <!-- KATEGORIER TAB -->
+  <!-- KATEGORIER -->
   <div id="tab-kategorier" class="tab-panel">
     <div class="cards-grid" id="cards-container"></div>
   </div>
 
-  <!-- SAMMENHENGER TAB -->
+  <!-- SAMMENHENGER -->
   <div id="tab-sammenhenger" class="tab-panel">
     <div class="connections-section">
       <h2 class="section-label">Hvordan kategoriene samspiller</h2>
@@ -710,29 +258,31 @@
     </div>
   </div>
 
-  <!-- REFLEKSJON TAB -->
+  <!-- REFLEKSJON -->
   <div id="tab-refleksjon" class="tab-panel">
     <div class="reflection-section">
-      <h2 class="section-label">Kursdesign-refleksjon</h2>
-      <p class="section-sub">Bruk dette verktøyet til å reflektere over ditt eget kurs eller undervisningsopplegg. Hva dekker du i dag – og hva kan styrkes?</p>
-      <div class="reflection-grid" id="reflection-grid"></div>
-      <button class="reflection-reset" onclick="resetReflection()">↺ Nullstill alle felt</button>
+      <h2 class="section-label">Refleksjonsverktøy</h2>
+      <p class="section-sub">Beskriv hva du gjør i ditt kurs innenfor hver kategori. Du mottar konkret tilbakemelding på hva som er bra og hva som kan styrkes – basert på Finks prinsipper for signifikant læring.</p>
+      <div class="refl-steps" id="refl-steps"></div>
+      <div id="refl-cards"></div>
+      <div class="refl-nav">
+        <button class="refl-nav-btn" id="refl-prev" onclick="reflNav(-1)" disabled>← Forrige</button>
+        <div class="refl-progress-dots" id="refl-dots"></div>
+        <button class="refl-nav-btn" id="refl-next" onclick="reflNav(1)">Neste →</button>
+      </div>
     </div>
   </div>
 
-  <!-- SJEKKLISTE TAB -->
+  <!-- SJEKKLISTE -->
   <div id="tab-sjekkliste" class="tab-panel">
     <div class="checklist-section">
       <h2 class="section-label">Sjekkliste for kursdesign</h2>
       <p class="section-sub">Huk av de elementene du allerede har på plass i ditt kurs. Bruk oversikten til å identifisere hva som kan styrkes.</p>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
-      </div>
-      <p class="progress-label" id="progress-label">0 av 24 fullført</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+      <p class="progress-label" id="progress-label">0 av 18 fullført</p>
       <div class="checklist-grid" id="checklist-container"></div>
     </div>
   </div>
-
 </main>
 
 <footer>
@@ -743,156 +293,100 @@
 <script>
 const CATS = [
   {
-    id: 0,
-    no: "Kategori 01",
-    title: "Grunnleggende kunnskap",
-    en: "Foundational Knowledge",
-    subtitle: "Informasjon, ideer, perspektiver",
-    icon: "📚",
-    color: "#c8922a",
-    desc: "Handlar om å forstå og hugse viktig informasjon, idear og perspektiv. Dette er det tradisjonelle læringsmålet – fakta, begrep, teoriar og prinsipp som studentane treng for å gå vidare. Men Fink understrekar at grunnleggjande kunnskap er berre eitt av seks mål, og bør ikkje dominere undervisinga.",
-    questions: [
-      "Kva nøkkelomgrep og fakta er viktige for å forstå faget?",
-      "Kva perspektiv og teoriar er grunnleggjande?",
-      "Kva bør studentane hugse om 2 år?"
-    ],
-    examples: ["Teoriar", "Begrep", "Fakta", "Modellar", "Prinsipp"],
-    checkItems: [
-      "Klare læringsmål om kunnskap og forståing",
-      "Pensum og ressursar som dekker kjernestoff",
-      "Vurdering av faktakunnskap og konseptforståing"
-    ]
+    id: 0, no: "Kategori 01", title: "Grunnleggende kunnskap", en: "Foundational Knowledge",
+    subtitle: "Informasjon, ideer, perspektiver", icon: "📚", color: "#c8922a",
+    desc: "Grunnleggende kunnskap handler om å forstå og huske viktig informasjon, ideer og perspektiver som er nødvendige for å gå videre i faget. Dette er det mest tradisjonelle læringsmålet og inkluderer fakta, begreper, teorier og prinsipper som utgjør fundamentet i fagfeltet. Fink understreker at grunnleggende kunnskap er avgjørende som utgangspunkt, men at den alene ikke er tilstrekkelig for varig og meningsfull læring. Den bør kombineres aktivt med de fem andre kategoriene. Studenter som kun tilegner seg faktakunnskap uten å anvende, integrere eller engasjere seg i den, vil i mange tilfeller glemme det meste innen kort tid etter eksamen. Målet er at studentene ikke bare kan gjengi informasjon, men genuint forstår den og kan bruke den som et aktivt springbrett for dypere innsikt og videre utforskning.",
+    questions: ["Hvilke nøkkelbegreper og fakta er nødvendige for å forstå faget?", "Hvilke perspektiver og teorier er grunnleggende for fagfeltet?", "Hva bør studentene huske og forstå om to år?"],
+    examples: ["Teorier og modeller", "Nøkkelbegreper", "Faglige fakta", "Prinsipper og lover", "Historisk kontekst"],
+    checkItems: ["Klare læringsmål som beskriver ønsket kunnskap og forståelse", "Pensum og ressurser som dekker kjernestoffet grundig", "Vurderingsformer som tester faktakunnskap og konseptforståelse"],
+    reflPrompt: "Beskriv hva slags grunnleggende kunnskap, teorier og begreper du ønsker at studentene skal lære i ditt kurs. Hva skal de forstå og huske? Hvordan presenterer du dette fagstoffet, og hva gjør du for å sikre at de virkelig forstår det?"
   },
   {
-    id: 1,
-    no: "Kategori 02",
-    title: "Anvendelse",
-    en: "Application",
-    subtitle: "Ferdigheter, tenkning, handlinger",
-    icon: "⚙️",
-    color: "#a84b2f",
-    desc: "Omhandlar å bruke kunnskap på nye og reelle situasjonar. Dette inkluderer kritisk tenkning, kreativ tenkning, praktiske ferdigheitar og handlingstaking. Studentane lærer ikkje berre «kva», men «korleis» og «kvifor» – dei kan løyse problem, ta avgjerder og bruke fagleg kunnskap i praksis.",
-    questions: [
-      "Kva kan studentane gjere med kunnskapen sin?",
-      "Kva problem kan dei løyse?",
-      "Kva type tenkning ønsker du å utvikle: kritisk, kreativ, praktisk?"
-    ],
-    examples: ["Problemløysing", "Casestudiar", "Laboratoriearbeid", "Prosjekt", "Simuleringar"],
-    checkItems: [
-      "Aktivitetar der studentane brukar kunnskap i nye situasjonar",
-      "Øving i kritisk og/eller kreativ tenkning",
-      "Praktiske ferdigheitar og handlingskompetanse"
-    ]
+    id: 1, no: "Kategori 02", title: "Anvendelse", en: "Application",
+    subtitle: "Ferdigheter, tenkning, handlinger", icon: "⚙️", color: "#a84b2f",
+    desc: "Anvendelse handler om å bruke kunnskap aktivt i nye og virkelige situasjoner. Dette inkluderer kritisk tenkning, kreativ tenkning, praktiske ferdigheter og evnen til å ta veloverveide beslutninger. Studentene lærer ikke bare «hva», men «hvordan» og «hvorfor» – de kan løse problemer, analysere situasjoner og bruke faglig kunnskap aktivt i praksis. Fink skiller mellom tre typer tenkning innenfor denne kategorien: kritisk tenkning (analysere, vurdere og argumentere), kreativ tenkning (skape noe nytt og originalt) og praktisk tenkning (bestemme hva man skal gjøre i en konkret situasjon). Når studenter anvender kunnskap i autentiske kontekster, befester de forståelsen og utvikler kompetanse som varer langt utover eksamenssituasjonen og følger dem inn i arbeidslivet.",
+    questions: ["Hva kan studentene konkret gjøre med kunnskapen sin etter kurset?", "Hvilke typer problemer skal de kunne identifisere og løse?", "Ønsker du å utvikle kritisk, kreativ eller praktisk tenkning – eller alle tre?"],
+    examples: ["Problemløsning", "Casestudier", "Laboratoriearbeid", "Prosjektarbeid", "Simuleringer og rollespill"],
+    checkItems: ["Aktiviteter der studentene bruker kunnskap i nye og autentiske situasjoner", "Øving i kritisk og/eller kreativ tenkning", "Oppgaver som krever praktiske ferdigheter og handlingskompetanse"],
+    reflPrompt: "Beskriv hvilke aktiviteter og oppgaver du bruker for å hjelpe studentene å anvende kunnskap i praksis. Hvilke typer problemer skal de kunne løse? Gir du dem mulighet til å øve kritisk og kreativ tenkning i kurset?"
   },
   {
-    id: 2,
-    no: "Kategori 03",
-    title: "Integrasjon",
-    en: "Integration",
-    subtitle: "Forbindelser, tverrfaglighet, helhet",
-    icon: "🔗",
-    color: "#4a6741",
-    desc: "Handlar om å sjå forbindelsar og samanhengar – mellom idear i faget, mellom ulike fag, mellom skule og livet utanfor. Integrasjon er det som gjer kunnskap levande og meiningsfull. Studentane oppdagar at det dei lærer heng saman med noko dei allereie kan – og med verda dei lever i.",
-    questions: [
-      "Korleis heng dette faget saman med andre fag?",
-      "Kva forbindelsar kan studentane oppdage mellom ulike tema?",
-      "Korleis relaterer fagstoffet til studentane sine eigne erfaringar?"
-    ],
-    examples: ["Tverrfaglege prosjekt", "Koblingar til dagsaktuelle saker", "Interdisiplinær analyse", "Synteseoppgåver"],
-    checkItems: [
-      "Oppgåver som knyter saman ulike delar av kurset",
-      "Tverrfaglege eller tverrsektorielle perspektiv",
-      "Koplingar til studentane sine eigne erfaringar eller interesser"
-    ]
+    id: 2, no: "Kategori 03", title: "Integrasjon", en: "Integration",
+    subtitle: "Forbindelser, tverrfaglighet, helhet", icon: "🔗", color: "#4a6741",
+    desc: "Integrasjon handler om å oppdage og skape meningsfulle forbindelser – mellom ideer og temaer innenfor faget, mellom ulike fag og fagdisipliner, og mellom det akademiske og livet utenfor campus. Når studenter integrerer kunnskap, ser de at det de lærer ikke eksisterer isolert, men henger nøye sammen med noe de allerede kan – og med verden de lever og arbeider i. Fink mener at integrasjon er det som virkelig gjør kunnskap levende, overførbar og nyttig på tvers av ulike sammenhenger. En student som kan se den direkte sammenhengen mellom fagstoff og sin fremtidige yrkespraksis, har langt større motivasjon for å lære grundig og holde fast på kunnskapen. Tverrfaglige perspektiver og eksplisitte koblinger mellom kursets temaer er sentrale verktøy for å fremme meningsfull integrasjon.",
+    questions: ["Hvordan henger dette kurset og faget sammen med andre fag studentene tar?", "Hvilke forbindelser kan studentene oppdage mellom ulike temaer i kurset?", "Hvordan relaterer fagstoffet seg til studentenes egne erfaringer og fremtidige yrkesliv?"],
+    examples: ["Tverrfaglige prosjekter", "Koblinger til dagsaktuelle saker", "Interdisiplinær analyse", "Synteseoppgaver", "Begrepskartering"],
+    checkItems: ["Oppgaver som knyter sammen ulike deler av kurset til en helhet", "Tverrfaglige eller tverrsektorielle perspektiver som belyser fagstoffet", "Eksplisitte koblinger mellom kurset og studentenes egne erfaringer eller fremtid"],
+    reflPrompt: "Beskriv hvordan du hjelper studentene å se sammenhenger – mellom ulike temaer i kurset, mellom faget og andre fag, og mellom det faglige og hverdagslivet eller yrkeslivet. Legger du opp til tverrfaglige perspektiver i undervisningen?"
   },
   {
-    id: 3,
-    no: "Kategori 04",
-    title: "Human dimensjon",
-    en: "Human Dimension",
-    subtitle: "Selv og andre, identitet, relasjoner",
-    icon: "🤝",
-    color: "#3d4f5c",
-    desc: "Omhandlar å lære noko vesentleg om seg sjølv og om andre som menneske. Dette inkluderer å forstå sin eigen identitet som fagperson, utvikle empati, og å forstå korleis andre tenker og opplever verda. Fink spør: Kva lærte studenten om seg sjølv gjennom dette kurset?",
-    questions: [
-      "Kva lærte studenten om seg sjølv?",
-      "Korleis påverkar fagstoffet måten dei ser på andre?",
-      "Kva implikasjonar har dette for studentane si profesjonelle rolle?"
-    ],
-    examples: ["Refleksjonslogg", "Rollespel", "Intervju", "Biografiske studiar", "Gruppearbeid"],
-    checkItems: [
-      "Refleksjonsaktivitetar knytt til fagleg og personleg identitet",
-      "Perspektivtaking og empatiøvingar",
-      "Bevisstheit om eigen profesjonsrolle"
-    ]
+    id: 3, no: "Kategori 04", title: "Human dimensjon", en: "Human Dimension",
+    subtitle: "Selv og andre, identitet, relasjoner", icon: "🤝", color: "#3d4f5c",
+    desc: "Den humane dimensjonen handler om å lære noe vesentlig og varig om seg selv og om andre mennesker gjennom arbeidet med faget. Dette inkluderer å forstå sin egen identitet som fagperson, utvikle empati og evne til perspektivtaking, og å forstå hvordan andre – studenter, kolleger, pasienter, klienter eller samfunnet for øvrig – opplever og tolker verden. Fink stiller det sentrale spørsmålet: Hva lærte studenten om seg selv gjennom dette kurset? Og hva lærte de om andre mennesker? Denne kategorien er særlig viktig i profesjonsfag og humaniora, men er like relevant og verdifull i naturvitenskap, teknologi og økonomi. Bevissthet om egne forutsetninger, verdier, begrensninger og vekstmuligheter som fagperson er en kompetanse som er verdifull i alle yrker og alle livssituasjoner.",
+    questions: ["Hva kan studenten lære om seg selv som fagperson og menneske gjennom dette kurset?", "Hvordan påvirker fagstoffet måten de ser på og forstår andre mennesker og grupper?", "Hvilke implikasjoner har kursets innhold for studentenes fremtidige profesjonelle rolle og ansvar?"],
+    examples: ["Refleksjonslogg", "Rollespill og perspektivtaking", "Intervju og feltarbeid", "Biografiske og narrative studier", "Veiledning og gruppearbeid"],
+    checkItems: ["Refleksjonsaktiviteter knyttet til faglig og personlig identitetsutvikling", "Perspektivtaking og øvelser som fremmer empati og forståelse for andre", "Bevisstgjøring om egen fremtidig profesjonsrolle og dens etiske ansvar"],
+    reflPrompt: "Beskriv hva studentene kan lære om seg selv og om andre gjennom ditt kurs. Er det refleksjonsoppgaver eller aktiviteter som fremmer selvbevissthet, empati eller forståelse av ulike perspektiver? Hvilken innsikt om seg selv som fagperson kan de utvikle?"
   },
   {
-    id: 4,
-    no: "Kategori 05",
-    title: "Engasjement",
-    en: "Caring",
-    subtitle: "Verdier, interesser, motivasjon",
-    icon: "❤️",
-    color: "#7a5c8a",
-    desc: "Handlar om å bry seg – om faget, om andre, om verda. Fink bruker omgrepet «caring» for å beskrive endringar i kva studentane verdset, kva dei bryr seg om og kva dei er motiverte for. Når studentane engasjerer seg emosjonelt, lærer dei djupare og hugsar lenger.",
-    questions: [
-      "Kva ønsker du at studentane skal bry seg om?",
-      "Kva verdiar og haldningar er viktige for faget?",
-      "Korleis kan undervisinga vekkje ekte interesse og nysgjerrigheit?"
-    ],
-    examples: ["Etiske dilemma", "Feltstudiar", "Autentiske problem", "Studentvalde tema", "Engasjement i samfunnet"],
-    checkItems: [
-      "Aktivitetar som knyter faget til verdiar og reelle konsekvensar",
-      "Moglegheiter for studentane å engasjere seg i saker dei bryr seg om",
-      "Emosjonelt engasjerande situasjonar og autentiske problem"
-    ]
+    id: 4, no: "Kategori 05", title: "Engasjement", en: "Caring",
+    subtitle: "Verdier, interesser, motivasjon", icon: "❤️", color: "#7a5c8a",
+    desc: "Engasjement – eller «caring» som Fink kaller det – handler om å bry seg genuint. Om faget, om andre mennesker, om verden og om samfunnet. Denne kategorien beskriver endringer i hva studentene verdsetter, hva de er opptatt av, og hva de er motiverte for å lære mer om etter at kurset er avsluttet. Fink mener at emosjonelt engasjement er en grunnleggende forutsetning for dyp og varig læring – når studentene genuint bryr seg om et tema eller en problemstilling, lærer de mer, reflekterer dypere og husker det lenger. Undervisere kan fremme engasjement ved å knytte fagstoffet til autentiske og relevante problemstillinger, gi studentene reelt valg i hva de utforsker, og la dem møte faktiske konsekvenser og etiske dilemmaer som naturlig vekker nysgjerrighet, engasjement og personlig investering i læringen.",
+    questions: ["Hva ønsker du at studentene skal bry seg om og være opptatt av etter endt kurs?", "Hvilke verdier og holdninger er sentrale og viktige i fagfeltet?", "Hvordan kan undervisningen vekke ekte interesse, nysgjerrighet og dypt engasjement hos studentene?"],
+    examples: ["Etiske dilemmaer og debatter", "Feltstudier og møte med praksis", "Autentiske og samfunnsrelevante problemer", "Studentvalgte prosjekttemaer", "Engasjement i lokalsamfunn eller praksisfelt"],
+    checkItems: ["Aktiviteter som knytter faget til verdier, reelle konsekvenser og etiske spørsmål", "Muligheter for studentene å utforske saker de selv bryr seg om", "Emosjonelt engasjerende situasjoner og autentiske problemstillinger som vekker nysgjerrighet"],
+    reflPrompt: "Beskriv hva du gjør for å vekke ekte engasjement og nysgjerrighet hos studentene. Kobler du fagstoffet til verdier, etikk eller reelle konsekvenser? Får studentene utforske tema de selv er opptatt av? Hva ønsker du at de skal bry seg om etter kurset?"
   },
   {
-    id: 5,
-    no: "Kategori 06",
-    title: "Lære å lære",
-    en: "Learning How to Learn",
-    subtitle: "Selvregulering, metakognisjon, nysgjerrighet",
-    icon: "🧭",
-    color: "#8a6b3a",
-    desc: "Handlar om å bli ein betre lærande – å forstå korleis ein sjølv lærer best, å bli sjølvstyrt, og å utvikle livslang nysgjerrigheit. Studentane lærer å stille gode spørsmål, søke etter ny kunnskap og ta ansvar for eigen læringsprosess. Dette er kanskje den viktigaste kategorien for livet etter studiet.",
-    questions: [
-      "Korleis kan studentane bli meir medvitne om eigen læringsprosess?",
-      "Kva strategiar for sjølvstyrt læring kan du modellere?",
-      "Korleis kan du fremje livslang nysgjerrigheit?"
-    ],
-    examples: ["Læringslogg", "Sjølvvurdering", "Portefølje", "Læringsplan", "Metakognitive refleksjonar"],
-    checkItems: [
-      "Aktivitetar for metakognitiv refleksjon",
-      "Sjølvvurdering og eigenvurdering av læringsprosessen",
-      "Utvikling av strategiar for sjølvstyrt læring"
-    ]
+    id: 5, no: "Kategori 06", title: "Lære å lære", en: "Learning How to Learn",
+    subtitle: "Selvregulering, metakognisjon, nysgjerrighet", icon: "🧭", color: "#8a6b3a",
+    desc: "Å lære å lære handler om å bli en stadig bedre lærende – å forstå hvordan man selv lærer best, å bli selvstyrt og ansvarlig i sin egen læringsprosess, og å utvikle en livslang nysgjerrighet og åpenhet for ny kunnskap og nye perspektiver. Studentene lærer å stille gode og produktive spørsmål, søke frem og kritisk vurdere relevant informasjon, evaluere egne læringsstrategier og ta aktivt ansvar for sin faglige utvikling. Fink mener dette er den kategorien som best forbereder studenter for livet etter studiet, fordi kunnskap, teknologi og samfunn endrer seg raskere enn noen gang. Den som vet hvordan de lærer effektivt, kan lære hva som helst de trenger. Metakognisjon – å tenke bevisst og kritisk over sin egen tenkning og læring – er et sentralt og kraftfullt verktøy i denne kategorien.",
+    questions: ["Hvordan kan studentene bli mer bevisste på sin egen læringsprosess og sine læringsstrategier?", "Hvilke strategier for selvregulert og selvstyrt læring kan du modellere og øve på i kurset?", "Hvordan kan du fremme livslang nysgjerrighet og motivasjon for å fortsette å lære etter kurset?"],
+    examples: ["Læringslogg og refleksjonsnotater", "Egenvurdering og selvrefleksjon", "Porteføljevurdering", "Personlig læringsplan", "Metakognitive samtaler og diskusjoner"],
+    checkItems: ["Aktiviteter for metakognitiv refleksjon over egen læring og læringsstrategier", "Systematisk egenvurdering og selvevaluering av læringsprosessen underveis", "Utvikling av strategier og vaner for selvregulert og selvstyrt læring"],
+    reflPrompt: "Beskriv hva du gjør for å hjelpe studentene å bli bedre lærende. Er det læringslogg, refleksjonsoppgaver eller egenvurdering i kurset? Snakker du med studentene om læringsstrategier og metakognisjon? Hva gjør du for å fremme selvstyrt, livslang læring?"
   }
 ];
 
 const CONNECTIONS = [
-  { a: 0, b: 1, text: "Grunnleggende kunnskap gir verktøyene som trengs for å anvende dem i nye situasjoner. Uten kunnskap er anvendelse vanskelig; uten anvendelse forblir kunnskap abstrakt." },
-  { a: 1, b: 2, text: "Når studentene anvender kunnskap fra ulike felt, oppdager de naturlig sammenhenger mellom dem – dette er essensen av integrasjon." },
-  { a: 2, b: 3, text: "Integrasjon av fagkunnskap med personlige erfaringer fører til innsikt om seg selv og andre – den humane dimensjonen." },
-  { a: 3, b: 4, text: "Forståelse av andre menneskers perspektiver styrker engasjement og omsorg. Empati og caring henger tett sammen." },
-  { a: 4, b: 5, text: "Ekte engasjement og interesse motiverer til livslang læring og selvstyrt utforskning av ny kunnskap." },
-  { a: 5, b: 0, text: "Metakognitive ferdigheter hjelper studentene å tilegne seg grunnleggende kunnskap mer effektivt – de vet hvordan de lærer best." },
-  { a: 0, b: 3, text: "Faglig kunnskap gir grunnlag for å forstå sin egen og andres rolle. Kunnskap om faget former identitet som fagperson." },
-  { a: 2, b: 5, text: "Evnen til å se sammenhenger er en sentral metakognitiv ferdighet – integrasjon styrker evnen til å lære å lære." }
+  { a: 0, b: 1, text: "Grunnleggende kunnskap gir det faglige grunnlaget som er nødvendig for å anvende kunnskap i nye situasjoner. Uten solid forståelse av begreper og teorier er meningsfull anvendelse vanskelig – og uten anvendelse forblir kunnskapen abstrakt og raskt glemt." },
+  { a: 1, b: 2, text: "Når studentene anvender kunnskap fra ulike temaer og fagfelt, oppdager de naturlig sammenhenger og mønstre på tvers av det de har lært. Denne prosessen er selve kjernen i integrasjon – å se helheten, ikke bare de enkeltstående delene." },
+  { a: 2, b: 3, text: "Integrasjon av fagkunnskap med egne erfaringer og andres perspektiver åpner for viktig innsikt om seg selv og andre som mennesker. Når studenter ser fagstoffet i lys av andres virkelighet, vokser den humane dimensjonen naturlig frem." },
+  { a: 3, b: 4, text: "Forståelse for andre menneskers perspektiver, livssituasjoner og opplevelser styrker engasjement og omsorg. Empati og ekte interesse for andre henger tett sammen – den humane dimensjonen beriker og utdyper engasjementet i faget." },
+  { a: 4, b: 5, text: "Ekte engasjement og genuin interesse for et fag motiverer til å fortsette å lære på egenhånd, lenge etter at kurset er avsluttet. Dette er grunnmuren i livslang, selvstyrt læring og er direkte knyttet til evnen til å lære å lære." },
+  { a: 5, b: 0, text: "Metakognitive ferdigheter og bevissthet om egne læringsstrategier gjør studentene i stand til å tilegne seg grunnleggende kunnskap langt mer effektivt. Den som vet hvordan de lærer best, bruker tid og energi på en klokere og mer målrettet måte." },
+  { a: 0, b: 3, text: "Faglig kunnskap og innsikt gir grunnlag for å reflektere over sin egen identitet som fagperson og over andres perspektiver og roller. Dyp kunnskap om faget former hvem man blir – og ønsker å være – som profesjonell." },
+  { a: 2, b: 5, text: "Evnen til å se sammenhenger og mønstre på tvers av fag og erfaringer er i seg selv en sentral metakognitiv ferdighet. Jo bedre studenter er til å integrere kunnskap fra ulike kilder, jo bedre og mer fleksible lærende blir de." }
 ];
 
-const REFLECTIONS = CATS.map(c => ({
-  label: c.title,
-  color: c.color,
-  placeholder: `Kva gjer du allereie for «${c.title.toLowerCase()}» i ditt kurs? Kva kan styrkast?`
-}));
+// WHEEL
+let activeSegIdx = -1;
+function highlightSeg(idx) {
+  const segs = document.querySelectorAll('.segment');
+  const info = document.getElementById('wheel-info');
+  if (activeSegIdx === idx) {
+    segs.forEach(s => s.classList.remove('active','dimmed'));
+    info.style.display = 'none';
+    activeSegIdx = -1;
+    return;
+  }
+  activeSegIdx = idx;
+  segs.forEach((s, i) => { s.classList.remove('active','dimmed'); if (i===idx) s.classList.add('active'); else s.classList.add('dimmed'); });
+  const c = CATS[idx];
+  document.getElementById('wi-icon').textContent = c.icon;
+  document.getElementById('wi-icon').style.background = c.color;
+  document.getElementById('wi-no').textContent = c.no;
+  document.getElementById('wi-title').textContent = c.title;
+  document.getElementById('wi-title').style.color = c.color;
+  document.getElementById('wi-desc').textContent = c.desc.slice(0,290) + '…';
+  document.getElementById('wi-q').textContent = '«' + c.questions[0] + '»';
+  info.style.display = 'block';
+}
 
-// === RENDER ===
-
+// CARDS
 function renderCards() {
-  const container = document.getElementById('cards-container');
-  container.innerHTML = CATS.map((c, i) => `
-    <div class="cat-card" id="card-${i}" onclick="toggleCard(${i})" style="border-left-color:${c.color}">
+  document.getElementById('cards-container').innerHTML = CATS.map((c, i) => `
+    <div class="cat-card" id="card-${i}" onclick="toggleCard(${i})">
       <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:${c.color};border-radius:4px 0 0 4px;"></div>
       <div class="card-header">
         <div class="card-icon" style="background:${c.color}">${c.icon}</div>
@@ -905,157 +399,164 @@ function renderCards() {
       </div>
       <div class="card-body">
         <p class="card-desc">${c.desc}</p>
-        <div class="card-questions">
-          <h4>Nøkkelspørsmål</h4>
-          <ul>${c.questions.map(q => `<li>${q}</li>`).join('')}</ul>
-        </div>
-        <div class="card-examples">
-          <h4>Eksempler på aktivitetar</h4>
-          <div class="example-chips">${c.examples.map(e => `<span class="chip" style="color:${c.color};border-color:${c.color}">${e}</span>`).join('')}</div>
-        </div>
+        <div class="card-questions"><h4>Nøkkelspørsmål</h4><ul>${c.questions.map(q=>`<li>${q}</li>`).join('')}</ul></div>
+        <div class="card-examples"><h4>Eksempler på aktiviteter</h4><div class="example-chips">${c.examples.map(e=>`<span class="chip" style="color:${c.color};border-color:${c.color}">${e}</span>`).join('')}</div></div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
+function toggleCard(i) { document.getElementById(`card-${i}`).classList.toggle('expanded'); }
 
-function toggleCard(i) {
-  const card = document.getElementById(`card-${i}`);
-  card.classList.toggle('expanded');
-}
-
+// CONNECTIONS
 function renderConnections() {
-  const container = document.getElementById('connections-container');
-  container.innerHTML = CONNECTIONS.map(conn => {
-    const a = CATS[conn.a], b = CATS[conn.b];
-    return `
-    <div class="conn-card">
-      <div class="conn-pair">
-        <span class="conn-badge" style="background:${a.color}">${a.title}</span>
-        <span class="conn-arrow">↔</span>
-        <span class="conn-badge" style="background:${b.color}">${b.title}</span>
-      </div>
-      <p class="conn-text">${conn.text}</p>
-    </div>`;
+  document.getElementById('connections-container').innerHTML = CONNECTIONS.map(conn => {
+    const a=CATS[conn.a], b=CATS[conn.b];
+    return `<div class="conn-card"><div class="conn-pair"><span class="conn-badge" style="background:${a.color}">${a.title}</span><span class="conn-arrow">↔</span><span class="conn-badge" style="background:${b.color}">${b.title}</span></div><p class="conn-text">${conn.text}</p></div>`;
   }).join('');
 }
 
+// REFLECTION
+let currentReflIdx = 0;
+const reflAnswers = new Array(CATS.length).fill('');
+const reflFeedbacks = new Array(CATS.length).fill(null);
+
 function renderReflection() {
-  const grid = document.getElementById('reflection-grid');
-  grid.innerHTML = REFLECTIONS.map((r, i) => `
-    <div class="refl-item">
-      <label style="color:${r.color}">${r.label}</label>
-      <textarea id="refl-${i}" placeholder="${r.placeholder}" oninput="saveReflection(${i}, this.value)"></textarea>
-    </div>
-  `).join('');
-  // Load saved
-  REFLECTIONS.forEach((_, i) => {
-    const saved = localStorage.getItem(`fink-refl-${i}`);
-    if (saved) document.getElementById(`refl-${i}`).value = saved;
+  document.getElementById('refl-steps').innerHTML = CATS.map((c,i) =>
+    `<button class="refl-step-btn ${i===0?'active':''}" id="refl-step-btn-${i}" onclick="goToRefl(${i})">${c.icon} ${c.title}</button>`
+  ).join('');
+
+  document.getElementById('refl-cards').innerHTML = CATS.map((c,i) => `
+    <div class="refl-card ${i===0?'active':''}" id="refl-card-${i}">
+      <div class="refl-card-header">
+        <span class="refl-icon">${c.icon}</span>
+        <div>
+          <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--mist);font-weight:500;">${c.no}</p>
+          <h3 class="refl-cat-title" style="color:${c.color}">${c.title}</h3>
+        </div>
+      </div>
+      <p class="refl-prompt">${c.reflPrompt}</p>
+      <textarea class="refl-textarea" id="refl-text-${i}" placeholder="Skriv inn ditt svar her – jo mer konkret, jo bedre tilbakemelding..." oninput="reflAnswers[${i}]=this.value">${reflAnswers[i]}</textarea><br>
+      <button class="refl-submit-btn" id="refl-btn-${i}" onclick="submitReflection(${i})">Få tilbakemelding →</button>
+      <div class="refl-feedback" id="refl-fb-${i}"></div>
+    </div>`).join('');
+
+  document.getElementById('refl-dots').innerHTML = CATS.map((_,i) =>
+    `<div class="refl-dot ${i===0?'active':''}" id="refl-dot-${i}" onclick="goToRefl(${i})"></div>`
+  ).join('');
+
+  updateReflNav();
+}
+
+function goToRefl(idx) {
+  document.querySelectorAll('.refl-card').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('.refl-step-btn').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('.refl-dot').forEach((el,i) => {
+    el.classList.remove('active','done');
+    if (i===idx) el.classList.add('active');
+    else if (reflFeedbacks[i]) el.classList.add('done');
   });
+  currentReflIdx = idx;
+  updateReflNav();
 }
 
-function saveReflection(i, val) {
-  try { localStorage.setItem(`fink-refl-${i}`, val); } catch(e){}
+function reflNav(dir) { const n=currentReflIdx+dir; if(n>=0&&n<CATS.length) goToRefl(n); }
+function updateReflNav() {
+  document.getElementById('refl-prev').disabled = currentReflIdx===0;
+  document.getElementById('refl-next').disabled = currentReflIdx===CATS.length-1;
 }
 
-function resetReflection() {
-  REFLECTIONS.forEach((_, i) => {
-    document.getElementById(`refl-${i}`).value = '';
-    try { localStorage.removeItem(`fink-refl-${i}`); } catch(e){}
-  });
+async function submitReflection(idx) {
+  const text = document.getElementById(`refl-text-${idx}`).value.trim();
+  if (text.length < 20) {
+    const fb = document.getElementById(`refl-fb-${idx}`);
+    fb.classList.add('visible');
+    fb.innerHTML = `<p style="color:#f0c060;font-size:0.85rem;">Skriv litt mer – minst 20 tegn – slik at tilbakemeldingen blir meningsfull.</p>`;
+    return;
+  }
+  const btn = document.getElementById(`refl-btn-${idx}`);
+  const fb = document.getElementById(`refl-fb-${idx}`);
+  btn.disabled = true;
+  fb.classList.add('visible');
+  fb.innerHTML = `<div class="fb-loading"><div class="spinner"></div><span>Analyserer svaret ditt…</span></div>`;
+
+  const c = CATS[idx];
+  const prompt = `Du er en erfaren pedagogisk veileder med dyp ekspertise på Finks taksonomi for signifikant læring (L. Dee Fink, 2003). En underviser har svart på et refleksjonsspørsmål om sin undervisning.
+
+Kategori: ${c.title} (${c.en})
+Hva kategorien handler om: ${c.desc.slice(0,250)}
+
+Underviserens svar:
+"${text}"
+
+Gi en kort, konkret og konstruktiv tilbakemelding på norsk. Strukturer svaret nøyaktig slik (uten annen formatering):
+
+BRA: [1-2 setninger om hva som er bra, lovende eller sterkt i svaret sett i lys av Finks prinsipper for signifikant læring]
+KAN STYRKES: [1-2 setninger om hva som mangler, er uklart eller kan utvikles videre, med ett spesifikt og handlingsorientert forslag]
+
+Vær faglig presis, spesifikk og støttende i tonen. Hold det kortfattet og direkte.`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const raw = (data.content||[]).map(b=>b.text||'').join('');
+    const braMatch = raw.match(/BRA:\s*(.+?)(?=KAN STYRKES:|$)/s);
+    const kanMatch = raw.match(/KAN STYRKES:\s*(.+?)$/s);
+    const braText = braMatch ? braMatch[1].trim() : '';
+    const kanText = kanMatch ? kanMatch[1].trim() : '';
+
+    fb.innerHTML = `
+      <div class="fb-section"><p class="fb-label good">✓ Hva som er bra</p><p class="fb-text">${braText || raw}</p></div>
+      ${kanText ? `<div class="fb-section"><p class="fb-label improve">↑ Kan styrkes</p><p class="fb-text">${kanText}</p></div>` : ''}`;
+
+    reflFeedbacks[idx] = raw;
+    const dot = document.getElementById(`refl-dot-${idx}`);
+    if (dot && currentReflIdx !== idx) { dot.classList.remove('active'); dot.classList.add('done'); }
+  } catch(err) {
+    fb.innerHTML = `<p style="color:#f08080;font-size:0.85rem;">Kunne ikke hente tilbakemelding akkurat nå. Prøv igjen om litt.</p>`;
+  }
+  btn.disabled = false;
 }
 
+// CHECKLIST
 let checkedItems = new Set();
-
 function renderChecklist() {
-  const container = document.getElementById('checklist-container');
   let idx = 0;
-  container.innerHTML = CATS.flatMap(c =>
+  document.getElementById('checklist-container').innerHTML = CATS.flatMap(c =>
     c.checkItems.map(item => {
       const id = idx++;
-      return `
-      <div class="check-item" id="chk-${id}" onclick="toggleCheck(${id})">
-        <div class="check-box" id="chk-box-${id}"></div>
-        <div>
-          <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;color:${c.color};display:block;margin-bottom:2px;">${c.title}</span>
-          <span class="check-text">${item}</span>
-        </div>
-      </div>`;
+      return `<div class="check-item" id="chk-${id}" onclick="toggleCheck(${id})"><div class="check-box" id="chk-box-${id}"></div><div><span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;color:${c.color};display:block;margin-bottom:2px;">${c.title}</span><span class="check-text">${item}</span></div></div>`;
     })
   ).join('');
   updateProgress();
 }
-
 function toggleCheck(id) {
-  const el = document.getElementById(`chk-${id}`);
-  const box = document.getElementById(`chk-box-${id}`);
-  if (checkedItems.has(id)) {
-    checkedItems.delete(id);
-    el.classList.remove('checked');
-    box.innerHTML = '';
-  } else {
-    checkedItems.add(id);
-    el.classList.add('checked');
-    box.innerHTML = '✓';
-  }
+  const el=document.getElementById(`chk-${id}`), box=document.getElementById(`chk-box-${id}`);
+  if(checkedItems.has(id)){checkedItems.delete(id);el.classList.remove('checked');box.innerHTML='';}
+  else{checkedItems.add(id);el.classList.add('checked');box.innerHTML='✓';}
   updateProgress();
 }
-
 function updateProgress() {
-  const total = 18; // 3 per category * 6
-  const done = checkedItems.size;
-  const pct = Math.round((done / total) * 100);
-  document.getElementById('progress-bar').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = `${done} av ${total} fullført`;
+  const total=18, done=checkedItems.size;
+  document.getElementById('progress-bar').style.width=Math.round(done/total*100)+'%';
+  document.getElementById('progress-label').textContent=`${done} av ${total} fullført`;
 }
 
-// === WHEEL INTERACTION ===
-let activeSegIdx = -1;
-
-const wheelInfoData = CATS.map(c => ({
-  icon: c.icon, no: c.no, title: c.title, color: c.color,
-  desc: c.desc.slice(0, 220) + '…',
-  q: c.questions[0]
-}));
-
-function highlightSeg(idx) {
-  const segs = document.querySelectorAll('.segment');
-  const info = document.getElementById('wheel-info');
-
-  if (activeSegIdx === idx) {
-    segs.forEach(s => { s.classList.remove('active','dimmed'); });
-    info.style.display = 'none';
-    activeSegIdx = -1;
-    return;
-  }
-
-  activeSegIdx = idx;
-  segs.forEach((s, i) => {
-    s.classList.remove('active','dimmed');
-    if (i === idx) s.classList.add('active');
-    else s.classList.add('dimmed');
-  });
-
-  const d = wheelInfoData[idx];
-  document.getElementById('wi-icon').textContent = d.icon;
-  document.getElementById('wi-icon').style.background = d.color;
-  document.getElementById('wi-no').textContent = d.no;
-  document.getElementById('wi-title').textContent = d.title;
-  document.getElementById('wi-title').style.color = d.color;
-  document.getElementById('wi-desc').textContent = d.desc;
-  document.getElementById('wi-q').textContent = '«' + d.q + '»';
-  info.style.display = 'block';
+// TABS
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
 }
 
-// === TABS ===
-function switchTab(name) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
-}
-
-// === INIT ===
+// INIT
 renderCards();
 renderConnections();
 renderReflection();
